@@ -83,8 +83,8 @@
             
             background-image:
                 linear-gradient(
-                    rgba(255,255,255,0.25),
-                    rgba(255,255,255,0.25)
+                    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.45)
                 ),
                 url('./cover-bg.jpg');
 
@@ -210,10 +210,10 @@
         }
 
         /* ANIMASI FADE OUT UNTUK COVER */
-        .cover-fade-out { 
-            opacity: 0 !important;
-            transform: scale(1.05) !important;
-            pointer-events: none;
+        .cover-fade-out{
+            opacity:0 !important;
+            transform:scale(1.08) !important;
+            filter:blur(5px);
         }
 
         /* --- STYLING JUDUL DI LUAR BOX --- */
@@ -678,12 +678,19 @@
         /* AUDIO FLOATING CONTROLLER */
         .audio-player-wrapper {
             position: fixed;
-            bottom: 85px; 
+
+            top: 20px;
             left: 20px;
-            z-index: 999;
+
+            z-index: 9999;
+
             opacity: 0;
             transform: scale(0.5);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+
+            transition:
+                opacity 0.5s ease,
+                transform 0.5s ease;
+
             display: none;
         }
         .audio-player-wrapper.visible {
@@ -755,6 +762,95 @@
         p { font-size: 0.95rem; color: #666; margin: 6px 0; line-height: 1.6; }
 
         .btn-custom { padding: 12px 25px; background-color: #6B8F71; color: white; border: none; border-radius: 50px; cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: 0.3s; box-shadow: 0 4px 10px rgba(197, 160, 89, 0.2); }
+
+        .luxury-open-btn{
+            position:relative;
+            overflow:hidden;
+
+            padding:15px 38px;
+
+            border:none;
+            border-radius:50px;
+
+            font-family:'Poppins',sans-serif;
+            font-size:1rem;
+            font-weight:600;
+            letter-spacing:.5px;
+
+            color:white;
+            cursor:pointer;
+
+            background:linear-gradient(
+                135deg,
+                #5f7f66 0%,
+                #6B8F71 35%,
+                #89a88f 60%,
+                #5f7f66 100%
+            );
+
+            box-shadow:
+                0 8px 25px rgba(107,143,113,.35),
+                0 0 0 1px rgba(255,230,170,.15),
+                0 0 20px rgba(255,230,170,.08);
+
+            transition:
+                transform .35s ease,
+                box-shadow .35s ease;
+
+            animation:luxuryPulse 3s ease-in-out infinite;
+        }
+
+        /* Kilauan */
+        .luxury-open-btn::before{
+            content:"";
+            position:absolute;
+            top:0;
+            left:-120%;
+
+            width:60%;
+            height:100%;
+
+            background:linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,.65),
+                transparent
+            );
+
+            transform:skewX(-25deg);
+
+            animation:shimmerWedding 3.5s linear infinite;
+        }
+
+        .luxury-open-btn:hover{
+            transform:translateY(-3px);
+
+            box-shadow:
+                0 12px 30px rgba(107,143,113,.45),
+                0 0 20px rgba(107,143,113,.25);
+        }
+
+        @keyframes shimmerWedding{
+            from{
+                left:-120%;
+            }
+            to{
+                left:150%;
+            }
+        }
+
+        @keyframes luxuryPulse{
+            0%{
+                transform:scale(1);
+            }
+            50%{
+                transform:scale(1.03);
+            }
+            100%{
+                transform:scale(1);
+            }
+        }
+
         .btn-pulse{
             opacity:0;
             animation:
@@ -799,29 +895,37 @@
         }
 
         .guest-name-box{
-            width:100%;
-            max-width:280px;
-            min-height:55px;
-            margin:10px auto 25px;
-            background:rgba(107,143,113,0.08);
-            border:1px solid rgba(107,143,113,0.25);
-            border-radius:14px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            padding:12px 20px;
-            font-weight:600;
-            color:#ffffff;
-            text-align:center;
-            font-size:1.15rem;
-            min-height:65px;
+    width:100%;
+    max-width:340px;
+    margin:15px auto 25px;
 
-            opacity: 0;
-            transform: translateY(25px);
-            animation: guestFadeIn 1s ease forwards;
-            animation-delay: .8s;
-        }
+    padding:16px 24px;
 
+    background:rgba(0,0,0,.45);
+    border:2px solid rgba(255,255,255,.35);
+
+    border-radius:18px;
+
+    color:#fff;
+    font-size:1.25rem;
+    font-weight:700;
+    text-align:center;
+    line-height:1.5;
+
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.25);
+
+    text-shadow:
+        0 2px 8px rgba(0,0,0,.7);
+
+    opacity:0;
+    transform:translateY(25px);
+    animation:guestFadeIn 1s ease forwards;
+    animation-delay:.8s;
+}
         @keyframes guestFadeIn{
             from{
                 opacity:0;
@@ -934,7 +1038,7 @@
     </audio>
 
     <div class="audio-player-wrapper" id="audioWrapper">
-        <button class="music-btn" id="musicBtn" onclick="toggleAudio()">🎵</button>
+        <button class="music-btn" id="musicBtn" onclick="toggleAudio()">♫</button>
     </div>
 
     <!-- NAVBAR INTERAKTIF (DENGAN EFEK FADE TRANSITION) -->
@@ -970,7 +1074,7 @@
         <!-- COVER SECTION -->
         <div id="cover-section" class="form-card page-section">
             <div class="card-inner-content">
-                <img src="./flower.png" class="flower" alt="bunga">
+                <img src="./wwww.png" class="flower" alt="bunga">
 
                 <!-- <p style="letter-spacing:3px; text-transform:uppercase; color:#888; font-size:1rem;">
                     The Wedding Of
@@ -984,11 +1088,13 @@
                     Yth.
                 </p>
 
-                <div class="guest-name-box">
+                <div class="guest-name-box" id="guestNameDisplay">
                     Nama Tamu Undangan
                 </div>
 
-                <button class="btn-custom btn-pulse" onclick="bukaUndangan()">
+                <button
+                    class="luxury-open-btn"
+                    onclick="bukaUndangan()">
                     Buka Undangan
                 </button>
             </div>
@@ -1236,7 +1342,7 @@
                                         <div class="cover-front bg-bca">
                                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                                 <span class="card-bank-title">BANK BCA</span>
-                                                <span class="card-tap-instruction">TAP 📖</span>
+                                                <span class="card-tap-instruction">TAP</span>
                                             </div>
                                             <div class="card-chip-gold"></div>
                                             <div style="display:flex; justify-content:space-between; align-items:flex-end;">
@@ -1250,7 +1356,7 @@
                                         <span class="inside-holder-label">Nama Pemilik</span>
                                         <div class="inside-holder-name">Romeo Montaque</div>
                                         <div class="inside-account-number" id="accountBca">1234 567 890</div>
-                                        <button class="btn-inside-copy" onclick="salinNorek('accountBca', this, 'cardContainerBca')">📋 Salin Norek</button>
+                                        <button class="btn-inside-copy" onclick="salinNorek('accountBca', this, 'cardContainerBca')">Salin Nomor Rekening</button>
                                     </div>
                                 </div>
                             </div>
@@ -1261,7 +1367,7 @@
                                         <div class="cover-front bg-mandiri">
                                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                                 <span class="card-bank-title">BANK MANDIRI</span>
-                                                <span class="card-tap-instruction">TAP 📖</span>
+                                                <span class="card-tap-instruction">TAP</span>
                                             </div>
                                             <div class="card-chip-gold"></div>
                                             <div style="display:flex; justify-content:space-between; align-items:flex-end;">
@@ -1275,7 +1381,7 @@
                                         <span class="inside-holder-label">Nama Pemilik</span>
                                         <div class="inside-holder-name">Juliet Capulet</div>
                                         <div class="inside-account-number" id="accountMandiri">9876 543 210</div>
-                                        <button class="btn-inside-copy" onclick="salinNorek('accountMandiri', this, 'cardContainerMandiri')">📋 Salin Norek</button>
+                                        <button class="btn-inside-copy" onclick="salinNorek('accountMandiri', this, 'cardContainerMandiri')">Salin Nomor Rekening</button>
                                     </div>
                                 </div>
                             </div>
@@ -1350,12 +1456,12 @@
         function toggleAudio() {
             if (isAudioPlaying) {
                 audio.pause();
-                musicBtn.innerText = '🔇';
+                musicBtn.innerText = '♪';
                 musicBtn.classList.remove('playing');
                 isAudioPlaying = false;
             } else {
                 audio.play().then(() => {
-                    musicBtn.innerText = '🎵';
+                    musicBtn.innerText = '♪';
                     musicBtn.classList.add('playing');
                     isAudioPlaying = true;
                 }).catch(err => console.log("Gagal memutar audio: ", err));
@@ -1679,6 +1785,43 @@
             fadeObserver.observe(section);
         });
 
+        // ==========================
+        // AMBIL NAMA TAMU DARI URL
+        // contoh:
+        // ?to=Andi%20Saputra
+        // ==========================
+
+        function getGuestName() {
+
+            const params = new URLSearchParams(window.location.search);
+
+            const guest =
+                params.get("to") ||
+                params.get("nama") ||
+                params.get("guest");
+
+            const guestBox =
+                document.getElementById("guestNameDisplay");
+
+            if (!guestBox) return;
+
+            if (guest) {
+
+                guestBox.textContent =
+                    decodeURIComponent(guest);
+
+            } else {
+
+                guestBox.textContent =
+                    "Tamu Undangan";
+
+            }
+        }
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            getGuestName
+        );
         
     </script>
 </body>
