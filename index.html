@@ -1452,6 +1452,7 @@
         let isAudioPlaying = false;
         let isNavTransitioning = false;
         let navHideTimer = null;
+        let musicHideTimer = null;
 
         function toggleAudio() {
             if (isAudioPlaying) {
@@ -1466,6 +1467,23 @@
                     isAudioPlaying = true;
                 }).catch(err => console.log("Gagal memutar audio: ", err));
             }
+        }
+
+        function hideMusicButton(){
+
+            audioWrapper.style.opacity = "0";
+            audioWrapper.style.transform = "scale(.5)";
+            audioWrapper.style.pointerEvents = "none";
+
+        }
+
+
+        function showMusicButton(){
+
+            audioWrapper.style.opacity = "1";
+            audioWrapper.style.transform = "scale(1)";
+            audioWrapper.style.pointerEvents = "auto";
+
         }
 
         // FUNGSI SCROLL DENGAN SEKUENS FADE-OUT & FADE-IN PER HALAMAN MENU
@@ -1593,26 +1611,104 @@
         }
         function stopMarquee() { if (marqueeTimer) clearInterval(marqueeTimer); }
 
-        function kirimUcapan(event) {
+        async function kirimUcapan(event){
+
             event.preventDefault();
-            const nama = document.getElementById('guestName').value.trim();
-            const pesan = document.getElementById('guestMessage').value.trim();
-            const displayArea = document.getElementById('wishesDisplayArea');
 
-            if(nama && pesan) {
-                stopMarquee();
-                const commentBox = document.createElement('div'); commentBox.className = 'wish-comment-box';
-                const nameDiv = document.createElement('div'); nameDiv.className = 'wish-comment-name'; nameDiv.innerText = nama;
-                const textDiv = document.createElement('div'); textDiv.className = 'wish-comment-text'; textDiv.innerText = pesan;
-                commentBox.appendChild(nameDiv); commentBox.appendChild(textDiv);
-                displayArea.insertBefore(commentBox, displayArea.firstChild);
-                currentScrollTop = 0; displayArea.style.transform = `translateY(0px)`;
-                document.getElementById('wishForm').reset();
-                alert("Terima kasih! Ucapan Anda berhasil dikirim.");
-                startMarquee();
+
+            const nama =
+            document.getElementById('guestName')
+            .value.trim();
+
+
+            const ucapan =
+            document.getElementById('guestMessage')
+            .value.trim();
+
+
+
+            if(!nama || !ucapan){
+                return;
             }
-        }
 
+
+
+            const data = {
+
+                nama:nama,
+
+                ucapan:ucapan
+
+            };
+
+
+
+            fetch(
+            "https://script.google.com/macros/s/AKfycbyi0-HX0asRIyP4sBOh4fF563mxA367FZSaxGnPhQjqryd-TFx9vzcFeOZqj6Y-YR2K_w/exec",
+            {
+
+                method:"POST",
+
+                mode:"no-cors",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:
+                JSON.stringify(data)
+
+            });
+
+
+
+            // tampilkan langsung di halaman
+
+            const displayArea =
+            document.getElementById(
+                'wishesDisplayArea'
+            );
+
+
+            const commentBox =
+            document.createElement('div');
+
+            commentBox.className =
+            'wish-comment-box';
+
+
+
+            commentBox.innerHTML = `
+
+            <div class="wish-comment-name">
+                ${nama}
+            </div>
+
+            <div class="wish-comment-text">
+                ${ucapan}
+            </div>
+
+            `;
+
+
+            displayArea.insertBefore(
+                commentBox,
+                displayArea.firstChild
+            );
+
+
+
+            document
+            .getElementById('wishForm')
+            .reset();
+
+
+
+            alert(
+            "Terima kasih! Ucapan Anda berhasil dikirim."
+            );
+
+        }
         function openLightbox(element){
 
             const img =
@@ -1656,18 +1752,33 @@
         // DETEKSI SCROLL OTOMATIS (Hanya jalan jika user scroll manual, bukan efek transisi navbar)
         window.addEventListener('scroll', () => {
 
-            if (isNavTransitioning) return;
+        if (isNavTransitioning) return;
 
-            // Sembunyikan navbar saat user sedang scroll
-            bottomNav.classList.remove('visible');
 
-            // Reset timer
-            clearTimeout(navHideTimer);
+        // sembunyikan navbar
+        bottomNav.classList.remove('visible');
 
-            // Tampilkan kembali saat scroll berhenti
-            navHideTimer = setTimeout(() => {
-                bottomNav.classList.add('visible');
-            }, 200);
+
+        // sembunyikan tombol musik
+        hideMusicButton();
+
+
+        clearTimeout(navHideTimer);
+        clearTimeout(musicHideTimer);
+
+
+        navHideTimer = setTimeout(() => {
+
+            bottomNav.classList.add('visible');
+
+        },200);
+
+
+        musicHideTimer = setTimeout(() => {
+
+            showMusicButton();
+
+        },500);
 
             const sections = document.querySelectorAll('.page-section');
             const scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
@@ -1821,6 +1932,64 @@
         document.addEventListener(
             "DOMContentLoaded",
             getGuestName
+        );
+
+        
+        async function loadWishes(){
+
+            const response =
+            await fetch(
+            "https://script.google.com/macros/s/AKfycbyi0-HX0asRIyP4sBOh4fF563mxA367FZSaxGnPhQjqryd-TFx9vzcFeOZqj6Y-YR2K_w/exec"
+            );
+
+
+            const data =
+            await response.json();
+
+
+            const area =
+            document.getElementById(
+                "wishesDisplayArea"
+            );
+
+
+            area.innerHTML="";
+
+
+            data.reverse().forEach(item=>{
+
+
+                const box =
+                document.createElement("div");
+
+
+                box.className =
+                "wish-comment-box";
+
+
+                box.innerHTML=`
+
+                <div class="wish-comment-name">
+                    ${item.Nama || item.nama || ""}
+                </div>
+
+                <div class="wish-comment-text">
+                    ${item.Ucapan || item.ucapan || ""}
+                </div>
+
+                `;
+
+
+                area.appendChild(box);
+
+
+            });
+
+        }
+
+        document.addEventListener(
+        "DOMContentLoaded",
+        loadWishes
         );
         
     </script>
